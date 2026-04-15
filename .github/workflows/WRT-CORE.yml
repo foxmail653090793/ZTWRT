@@ -148,11 +148,14 @@ jobs:
             echo "caches cleanup done!"
           fi
           
-      - name: Add Lucky (latest v2.27.2)
+      - name: Add Lucky
         run: |
           cd ./wrt
-          rm -rf package/luci-app-lucky
-          echo "src-git lucky https://github.com/gdy666/luci-app-lucky.git" >> feeds.conf.default
+          # 使用 sed 在 feeds 顶部插入，确保优先级
+          sed -i '1i src-git lucky https://github.com/gdy666/luci-app-lucky.git' feeds.conf.default
+          # 彻底清除可能存在的旧包，防止重复定义
+          rm -rf package/feeds/lucky/luci-app-lucky
+          rm -rf package/feeds/lucky/lucky
           
       - name: Update Feeds
         run: |
@@ -183,24 +186,6 @@ jobs:
           else
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
-
-           # 👇 只加这一段，启用 TurboACC（IPQ807x 专用：开 NSS、关 SFE）
-          cat >> .config <<EOF
-          CONFIG_PACKAGE_luci-app-turboacc=y
-          CONFIG_PACKAGE_luci-i18n-turboacc-zh-cn=y
-          # 基础依赖-加速相关
-          CONFIG_PACKAGE_kmod-nft-offload=y
-          CONFIG_PACKAGE_kmod-tcp-bpf=y
-          CONFIG_PACKAGE_kmod-tcp-bbr=y
-          CONFIG_PACKAGE_nft-fullcone=y
-          # IPQ807x 专用：禁用 SFE、启用 NSS 加速
-          CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_SFE=n
-          CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_SHORTCUT_FE=n
-          CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_OFFLOADING=y
-          # Lucky 配置
-          CONFIG_PACKAGE_lucky=y
-          CONFIG_PACKAGE_luci-app-lucky=y
-          CONFIG_PACKAGE_luci-i18n-lucky-zh-cn=y
 
           EOF
           
