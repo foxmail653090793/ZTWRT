@@ -262,7 +262,9 @@ jobs:
           tag_name: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}-${{env.WRT_DATE}}
           files: ./wrt/upload/*.*
           body: |
-            这是个FORK自VIKINGYFY大佬的自用项目，仅支持红米AX6!
+            这是个FORK自VIKINGYFY大佬的自用项目，
+            
+            仅支持ipq60xx和ipq807x的部分设备!
             
             固件可以随便下，但刷坏概不负责
 
