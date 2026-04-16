@@ -188,35 +188,6 @@ jobs:
           else
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
-          
-          # =========================
-          # QoSify（完整版）
-          echo "CONFIG_PACKAGE_qosify=y" >> .config
-          echo "CONFIG_PACKAGE_luci-app-qosify=y" >> .config
-          # QoS核心（必须！）
-          echo "CONFIG_PACKAGE_kmod-sched-core=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-sched-cake=y" >> .config
-          # ipset（可选但推荐）
-          echo "CONFIG_PACKAGE_ipset=y" >> .config
-          # nft / flow / 依赖
-          echo "CONFIG_PACKAGE_kmod-nft-core=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-nft-flow=y" >> .config
-          echo "CONFIG_PACKAGE_nftables=y" >> .config
-          # ucode（LuCI依赖）
-          echo "CONFIG_PACKAGE_ucode=y" >> .config
-          # 设备流量监控（LuCI显示设备）
-          echo "CONFIG_PACKAGE_luci-app-nlbwmon=y" >> .config
-          echo "CONFIG_PACKAGE_nlbwmon=y" >> .config
-          # QoSify + LuCI
-          echo "CONFIG_PACKAGE_qosify=y" >> .config
-          echo "CONFIG_PACKAGE_luci-app-qosify=y" >> .config
-          # 设备识别
-          echo "CONFIG_PACKAGE_luci-app-nlbwmon=y" >> .config
-          echo "CONFIG_PACKAGE_nlbwmon=y" >> .config
-          # DHCP / host 读取支持
-          echo "CONFIG_PACKAGE_odhcpd-ipv6only=y" >> .config
-
-
 
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
